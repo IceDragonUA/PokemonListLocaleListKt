@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/card_margin_bottom"
+    android:theme="@style/Theme.MaterialComponents.Light"
+    app:cardBackgroundColor="@color/colorLighterGrey"
+    app:cardCornerRadius="@dimen/none"
+    app:rippleColor="@color/colorLightBlue">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/card_text_margin"
+        android:paddingBottom="@dimen/card_text_margin">
+
+        <TextView
+            android:id="@+id/name"
+            style="@style/CardText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
+            android:textColor="@color/colorLightBlack"
+            android:textSize="@dimen/card_main_text_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

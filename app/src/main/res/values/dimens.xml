@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="none">0dp</dimen>
+
+    <dimen name="card_text_margin">14dp</dimen>
+    <dimen name="card_text_padding">14dp</dimen>
+    <dimen name="card_main_text_size">18sp</dimen>
+    <dimen name="card_sub_text_size">14sp</dimen>
+    <dimen name="card_img_width">96dp</dimen>
+    <dimen name="card_img_height">96dp</dimen>
+    <dimen name="card_margin_bottom">2dp</dimen>
+
+    <dimen name="card_no_item_radius">16dp</dimen>
+    <dimen name="card_no_item_padding">12dp</dimen>
+
+</resources>

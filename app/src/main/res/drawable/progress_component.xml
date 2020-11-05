@@ -1,0 +1,34 @@
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android" android:oneshot="false">
+    <item android:duration="70">
+        <rotate
+            android:drawable="@drawable/ic_progress" android:pivotX="50%" android:pivotY="50%" android:fromDegrees="0" android:toDegrees="45" android:repeatCount="1"/>
+    </item>
+    <item android:duration="70">
+        <rotate
+            android:drawable="@drawable/ic_progress" android:pivotX="50%" android:pivotY="50%" android:fromDegrees="45" android:toDegrees="90" android:repeatCount="1"/>
+    </item>
+    <item android:duration="70">
+        <rotate
+            android:drawable="@drawable/ic_progress" android:pivotX="50%" android:pivotY="50%" android:fromDegrees="90" android:toDegrees="135" android:repeatCount="1"/>
+    </item>
+    <item android:duration="70">
+        <rotate
+            android:drawable="@drawable/ic_progress" android:pivotX="50%" android:pivotY="50%" android:fromDegrees="135" android:toDegrees="180" android:repeatCount="1"/>
+    </item>
+    <item android:duration="70">
+        <rotate
+            android:drawable="@drawable/ic_progress" android:pivotX="50%" android:pivotY="50%" android:fromDegrees="180" android:toDegrees="225" android:repeatCount="1"/>
+    </item>
+    <item android:duration="70">
+        <rotate
+            android:drawable="@drawable/ic_progress" android:pivotX="50%" android:pivotY="50%" android:fromDegrees="225" android:toDegrees="270" android:repeatCount="1"/>
+    </item>
+    <item android:duration="70">
+        <rotate
+            android:drawable="@drawable/ic_progress" android:pivotX="50%" android:pivotY="50%" android:fromDegrees="270" android:toDegrees="315" android:repeatCount="1"/>
+    </item>
+    <item android:duration="70">
+        <rotate
+            android:drawable="@drawable/ic_progress" android:pivotX="50%" android:pivotY="50%" android:fromDegrees="315" android:toDegrees="360" android:repeatCount="1"/>
+    </item>
+</animation-list>

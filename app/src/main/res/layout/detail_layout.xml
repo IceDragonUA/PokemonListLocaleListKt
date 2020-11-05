@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorLighterGrey"
+        android:paddingTop="@dimen/card_text_margin"
+        android:paddingBottom="@dimen/card_text_margin">
+
+        <ImageView
+            android:id="@+id/image"
+            style="@style/CardImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/image"
+            app:layout_constraintTop_toTopOf="@id/image">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/info_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/weight"
+                    style="@style/CardText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/weight"
+                    android:textColor="@color/colorLightBlack"
+                    android:textSize="@dimen/card_sub_text_size"
+                    app:layout_constraintBottom_toTopOf="@id/height"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/height"
+                    style="@style/CardText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/height"
+                    android:textColor="@color/colorLightBlack"
+                    android:textSize="@dimen/card_sub_text_size"
+                    app:layout_constraintBottom_toTopOf="@id/experience"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/weight" />
+
+                <TextView
+                    android:id="@+id/experience"
+                    style="@style/CardText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/experience"
+                    android:textColor="@color/colorLightBlack"
+                    android:textSize="@dimen/card_sub_text_size"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/height" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/weight_value"
+                style="@style/CardText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/loading"
+                android:textColor="@color/colorLightBlack"
+                android:textSize="@dimen/card_sub_text_size"
+                app:layout_constraintBottom_toTopOf="@id/height_value"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/info_label"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/height_value"
+                style="@style/CardText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/loading"
+                android:textColor="@color/colorLightBlack"
+                android:textSize="@dimen/card_sub_text_size"
+                app:layout_constraintBottom_toTopOf="@id/experience_value"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/info_label"
+                app:layout_constraintTop_toBottomOf="@id/weight_value" />
+
+            <TextView
+                android:id="@+id/experience_value"
+                style="@style/CardText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/loading"
+                android:textColor="@color/colorLightBlack"
+                android:textSize="@dimen/card_sub_text_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/info_label"
+                app:layout_constraintTop_toBottomOf="@id/height_value" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/card_text_padding"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/image">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/desc_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/stats"
+                    style="@style/CardText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stats"
+                    android:textColor="@color/colorLightBlack"
+                    android:textSize="@dimen/card_sub_text_size"
+                    app:layout_constraintBottom_toTopOf="@id/abilities"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/abilities"
+                    style="@style/CardText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/abilities"
+                    android:textColor="@color/colorLightBlack"
+                    android:textSize="@dimen/card_sub_text_size"
+                    app:layout_constraintBottom_toTopOf="@id/types"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/stats" />
+
+                <TextView
+                    android:id="@+id/types"
+                    style="@style/CardText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/types"
+                    android:textColor="@color/colorLightBlack"
+                    android:textSize="@dimen/card_sub_text_size"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/abilities" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/stats_value"
+                style="@style/CardText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/loading"
+                android:textColor="@color/colorLightBlack"
+                android:textSize="@dimen/card_sub_text_size"
+                app:layout_constraintBottom_toTopOf="@id/abilities_value"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/desc_label"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/abilities_value"
+                style="@style/CardText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/loading"
+                android:textColor="@color/colorLightBlack"
+                android:textSize="@dimen/card_sub_text_size"
+                app:layout_constraintBottom_toTopOf="@id/types_value"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/desc_label"
+                app:layout_constraintTop_toBottomOf="@id/stats_value" />
+
+            <TextView
+                android:id="@+id/types_value"
+                style="@style/CardText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/loading"
+                android:textColor="@color/colorLightBlack"
+                android:textSize="@dimen/card_sub_text_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/desc_label"
+                app:layout_constraintTop_toBottomOf="@id/abilities_value" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

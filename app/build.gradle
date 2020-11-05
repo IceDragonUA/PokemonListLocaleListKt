@@ -1,0 +1,122 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: 'dagger.hilt.android.plugin'
+
+android {
+    compileSdkVersion COMPILE_SDK_VERSION
+    buildToolsVersion BUILD_TOOLS_VERSION
+
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    defaultConfig {
+        minSdkVersion MIN_SDK_VERSION
+        targetSdkVersion TARGET_SDK_VERSION
+
+        applicationId APP_ID
+
+        versionCode VERSION_CODE
+        versionName VERSION_NAME
+
+        multiDexEnabled true
+
+        testInstrumentationRunner TEST
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildFeatures {
+        dataBinding true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation dep.kotlinStd
+
+    implementation dep.anko
+
+    implementation dep.appCompat
+    implementation dep.material
+    implementation dep.fragment
+    implementation dep.fragmentKtx
+    implementation dep.ktxCore
+
+    implementation dep.lifeCycleViewModel
+    implementation dep.lifeCycleLiveData
+    implementation dep.lifeCycleReactive
+    implementation dep.lifeCycleCommon
+    implementation dep.lifeCycleExtansions
+    implementation dep.legacySupport
+
+    // CardView
+    implementation dep.cardView
+
+    // RecyclerView
+    implementation dep.recyclerView
+
+    // Paging
+    implementation dep.paging
+
+    // Glide
+    implementation dep.glide
+    kapt dep.glideCompiler
+
+    // Dagger
+    implementation dep.dagger
+    kapt dep.daggerCompiler
+    annotationProcessor dep.daggerCompiler
+    implementation dep.daggerHilt
+    kapt dep.daggerHiltCompiler
+    annotationProcessor dep.daggerHiltCompiler
+
+    // ViewModel
+    implementation dep.viewModelHilt
+    kapt dep.viewModelHiltCompiler
+    annotationProcessor dep.viewModelHiltCompiler
+
+    // RxAndroid
+    implementation dep.rxAndroid
+    implementation dep.rxJava
+
+    // Retrofit
+    implementation dep.retrofit
+    implementation dep.retrofitAdaptRx
+    implementation dep.retrofitConvGson
+    implementation dep.reactiveNetwork
+    implementation dep.okhttpLogging
+
+    //Room
+    implementation dep.room
+    kapt dep.roomCompiler
+    implementation dep.roomRxJava
+
+    // FragmentNavigation
+    implementation dep.fragmentNavigation
+    implementation dep.fragmentNavigationUi
+    implementation dep.fragmentNavigationFeature
+
+    // Timber
+    implementation dep.timber
+
+    implementation dep.constraintLayout
+
+    testImplementation dep.junit
+    testImplementation dep.mockito
+}

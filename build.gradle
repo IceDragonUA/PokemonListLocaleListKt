@@ -1,0 +1,48 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+ext {
+    COMPILE_SDK_VERSION = 29
+    MIN_SDK_VERSION = 17
+    TARGET_SDK_VERSION = 29
+
+    BUILD_TOOLS_VERSION = "29.0.3"
+
+    APP_ID = "com.evaluation"
+    VERSION_CODE= 1
+    VERSION_NAME= "1"
+
+    TEST = "androidx.test.runner.AndroidJUnitRunner"
+}
+
+buildscript {
+    ext {
+        GRADLE_SCRIPT = { scriptName ->
+            file("${rootProject.projectDir}/${scriptName}.gradle")
+        }
+    }
+    apply from: GRADLE_SCRIPT('dependencies')
+
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath dep.androidGradlePlugin
+        classpath dep.kotlinGradlePlugin
+        classpath dep.kotlinExtGradlePlugin
+        classpath dep.daggerHiltGradlePlugin
+        classpath dep.safeArgsGradlePlugin
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

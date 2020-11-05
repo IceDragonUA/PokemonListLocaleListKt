@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorLighterGrey"
+    tools:showIn="@layout/no_item">
+
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corner"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingStart="@dimen/card_no_item_padding"
+        android:paddingLeft="@dimen/card_no_item_padding"
+        android:paddingTop="@dimen/card_no_item_padding"
+        android:paddingEnd="@dimen/card_text_padding"
+        android:paddingRight="@dimen/card_text_padding"
+        android:paddingBottom="@dimen/card_no_item_padding"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/card_main_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

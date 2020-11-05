@@ -1,0 +1,54 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="CardText">
+        <item name="android:paddingLeft">@dimen/card_text_padding</item>
+        <item name="android:paddingRight">@dimen/card_text_padding</item>
+        <item name="android:layout_marginLeft">@dimen/card_text_padding</item>
+        <item name="android:layout_marginRight">@dimen/card_text_padding</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="CardImage">
+        <item name="android:layout_width">@dimen/card_img_width</item>
+        <item name="android:layout_height">@dimen/card_img_height</item>
+        <item name="android:layout_marginLeft">@dimen/card_text_padding</item>
+        <item name="android:layout_marginRight">@dimen/card_text_padding</item>
+    </style>
+
+    <style name="ComponentProgress" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:indeterminateDrawable">@drawable/progress_component</item>
+    </style>
+
+    <style name="ComponentToolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">@color/colorBlack</item>
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+    </style>
+
+    <style name="DetailImage">
+        <item name="android:layout_width">@dimen/card_img_width</item>
+        <item name="android:layout_height">@dimen/card_img_height</item>
+        <item name="android:layout_marginTop">@dimen/card_text_padding</item>
+        <item name="android:layout_marginLeft">@dimen/card_text_padding</item>
+        <item name="android:layout_marginBottom">@dimen/card_text_padding</item>
+        <item name="android:layout_marginRight">@dimen/card_text_padding</item>
+    </style>
+
+    <style name="DetailText">
+        <item name="android:paddingLeft">@dimen/card_text_padding</item>
+        <item name="android:paddingRight">@dimen/card_text_padding</item>
+        <item name="android:layout_marginTop">@dimen/card_text_padding</item>
+        <item name="android:layout_marginLeft">@dimen/card_text_padding</item>
+        <item name="android:layout_marginRight">@dimen/card_text_padding</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+</resources>
