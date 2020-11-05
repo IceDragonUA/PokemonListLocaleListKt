@@ -3,6 +3,7 @@ package com.evaluation.pokemons.repository
 import com.evaluation.adapter.viewholder.item.BaseItemView
 import com.evaluation.pokemons.model.item.database.types.TypeTableItem
 import com.evaluation.utils.LauncherViewState
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
@@ -14,27 +15,15 @@ import io.reactivex.subjects.PublishSubject
  */
 interface AppPokemonsRepository {
 
-    fun pokemonListInit(
+    fun loadPokemons(): Flowable<MutableList<BaseItemView>>
+
+    fun loadList(
         offset: Int,
         limit: Int,
-        query: String,
-        category: String,
-        onPrepared: () -> Unit,
-        onSuccess: (MutableList<BaseItemView>) -> Unit,
-        onError: (MutableList<BaseItemView>) -> Unit
-    ): Disposable
+        status: PublishSubject<LauncherViewState>
+    ): Observable<LauncherViewState>
 
-    fun pokemonListPaged(
-        offset: Int,
-        limit: Int,
-        query: String,
-        category: String,
-        onPrepared: () -> Unit,
-        onSuccess: (MutableList<BaseItemView>) -> Unit,
-        onError: () -> Unit
-    ): Disposable
-
-    fun status(
+    fun loadStatus(
         offset: Int,
         limit: Int,
         status: PublishSubject<LauncherViewState>

@@ -1,14 +1,11 @@
 package com.evaluation.pokemons.dagger
 
 import android.content.Context
-import androidx.paging.PagedList
 import com.evaluation.database.AppDatabase
 import com.evaluation.executor.BaseExecutor
 import com.evaluation.network.RestApi
 import com.evaluation.network.handler.NetworkHandler
 import com.evaluation.pokemons.database.AppPokemonsDatabaseDao
-import com.evaluation.pokemons.datasource.AppPokemonDataSource
-import com.evaluation.pokemons.datasource.AppPokemonDataSourceFactory
 import com.evaluation.pokemons.interaction.AppPokemonsInteraction
 import com.evaluation.pokemons.interaction.AppPokemonsInteractionImpl
 import com.evaluation.pokemons.mapper.PokemonMapper
@@ -22,7 +19,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
-import java.util.concurrent.Executor
 import javax.inject.Singleton
 
 @Module
@@ -40,20 +36,11 @@ object DataPokemonsModule {
 
     @Singleton
     @Provides
-    fun appRepository(context: Context, mapper: PokemonMapper, remoteDao: AppPokemonsRestApiDao, localDao: AppPokemonsDatabaseDao, config: ConfigPreferences, executor: BaseExecutor, gson: Gson) : AppPokemonsRepository =
-        AppPokemonsRepositoryImpl(context, mapper, remoteDao, localDao, config, executor, gson)
+    fun appRepository(context: Context, mapper: PokemonMapper, remoteDao: AppPokemonsRestApiDao, localDao: AppPokemonsDatabaseDao, config: ConfigPreferences, executor: BaseExecutor) : AppPokemonsRepository =
+        AppPokemonsRepositoryImpl(context, mapper, remoteDao, localDao, config, executor)
 
     @Singleton
     @Provides
-    fun appDataSource(appRepository: AppPokemonsRepository) = AppPokemonDataSource(appRepository)
-
-    @Singleton
-    @Provides
-    fun appDataSourceFactory(appDataSource: AppPokemonDataSource) = AppPokemonDataSourceFactory(appDataSource)
-
-    @Singleton
-    @Provides
-    fun appInteraction(factory: AppPokemonDataSourceFactory, config: PagedList.Config, networkExecutor: Executor, repository: AppPokemonsRepository): AppPokemonsInteraction =
-        AppPokemonsInteractionImpl(factory, config, networkExecutor, repository)
+    fun appInteraction(repository: AppPokemonsRepository): AppPokemonsInteraction = AppPokemonsInteractionImpl(repository)
 
 }

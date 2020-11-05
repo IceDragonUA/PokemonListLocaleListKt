@@ -10,7 +10,7 @@ import com.evaluation.pokemons.model.item.view.language.LanguageView
  */
 data class LanguageItemView(
     override var index: String,
-    override var next: Boolean = false,
+    override var name: String,
     var viewItem: LanguageView
 ) : BaseItemView {
 

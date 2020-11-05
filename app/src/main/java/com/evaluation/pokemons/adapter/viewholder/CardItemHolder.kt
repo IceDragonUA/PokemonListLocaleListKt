@@ -13,20 +13,20 @@ import kotlinx.android.synthetic.main.card_item.view.*
 class CardItemHolder(itemView: View, listener: AdapterItemClickListener<CardItemView>?) :
     BaseViewHolder<CardItemView>(itemView, listener) {
 
-    override fun bind(item: CardItemView, language: String) {
-        itemView.image.loadFromUrl(item.viewItem.front_default)
+    override fun bind(item: CardItemView, language: String?) {
         itemView.name.initText(item.viewItem.name)
-
-        val abilities = item.viewItem.abilities
-            .filter { it.names.find { name -> name.language.name == language }?.name != null  }
-            .map { it.names.find { name -> name.language.name == language } }
-        if (abilities.isNotEmpty())
-            itemView.abilities.initText(abilities.joinToString { it?.name ?: emptyString() }) else
-            itemView.abilities.initText(emptyString())
 
         itemView.setOnClickListener {
             listener?.onClicked(item)
         }
+
+//        itemView.image.loadFromUrl(item.viewItem.front_default)
+//        val abilities = item.viewItem.abilities
+//            .filter { it.names.find { name -> name.language.name == language }?.name != null  }
+//            .map { it.names.find { name -> name.language.name == language } }
+//        if (abilities.isNotEmpty())
+//            itemView.abilities.initText(abilities.joinToString { it?.name ?: emptyString() }) else
+//            itemView.abilities.initText(emptyString())
     }
 
 }

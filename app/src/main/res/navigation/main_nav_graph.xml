@@ -24,12 +24,6 @@
         <argument
             android:name="name"
             app:argType="string" />
-        <argument
-            android:name="language"
-            app:argType="string" />
-        <argument
-            android:name="item"
-            app:argType="com.evaluation.pokemons.model.item.view.pokemon.PokemonView" />
     </fragment>
 
 </navigation>

@@ -11,7 +11,14 @@ import kotlinx.android.parcel.Parcelize
  * @since 07.10.2020
  */
 @Parcelize
-data class PokemonView(
+data class PokemonItemView(
     val name: String,
-    val url: String
+    val weight: Int,
+    val height: Int,
+    val experience: Int,
+    val front_default: String,
+    val back_default: String,
+    var stats: List<PokemonStatView>,
+    var abilities: List<PokemonAbilityView>,
+    var types: List<PokemonTypeView>
 ) : Parcelable

@@ -21,7 +21,7 @@ class LaunchViewModel @ViewModelInject constructor(
     val load: LiveData<LauncherViewState>
         get() {
             if (_load == null) {
-                _load = LiveDataReactiveStreams.fromPublisher(interaction.load())
+                _load = LiveDataReactiveStreams.fromPublisher(interaction.loadStatus())
             }
             return _load ?: throw AssertionError("Set to null by another thread")
         }

@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
 import com.evaluation.R
 import com.evaluation.glide.GlideApp
+import io.reactivex.Flowable
 import io.reactivex.Single
 
 /**
@@ -30,3 +31,6 @@ fun TextView.initText(text: String) {
 
 fun <T> Single<T>.toLiveData() : LiveData<T> =
     LiveDataReactiveStreams.fromPublisher(this.toFlowable())
+
+fun <T> Flowable<T>.toLiveData() : LiveData<T> =
+    LiveDataReactiveStreams.fromPublisher(this)

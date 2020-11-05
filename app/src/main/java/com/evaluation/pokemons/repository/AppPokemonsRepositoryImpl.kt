@@ -3,7 +3,6 @@ package com.evaluation.pokemons.repository
 import android.content.Context
 import com.evaluation.R
 import com.evaluation.adapter.viewholder.item.BaseItemView
-import com.evaluation.adapter.viewholder.item.EmptyItemView
 import com.evaluation.adapter.viewholder.item.NoItemView
 import com.evaluation.executor.ThreadExecutor
 import com.evaluation.language.adapter.viewholder.item.LanguageItemView
@@ -11,16 +10,17 @@ import com.evaluation.pokemons.adapter.viewholder.item.CardItemView
 import com.evaluation.pokemons.database.AppPokemonsDatabaseDao
 import com.evaluation.pokemons.mapper.PokemonMapper
 import com.evaluation.pokemons.model.item.database.pokemon.PokemonInfoTableItem
+import com.evaluation.pokemons.model.item.database.pokemon.PokemonTableItem
 import com.evaluation.pokemons.model.item.database.types.TypeTableItem
 import com.evaluation.pokemons.model.item.rest.pokemon.options.Type
 import com.evaluation.pokemons.network.AppPokemonsRestApiDao
 import com.evaluation.storage.ConfigPreferences
 import com.evaluation.utils.LauncherViewState
-import com.evaluation.utils.NO_ITEM
 import com.evaluation.utils.defIfNull
 import com.evaluation.utils.fromJson
 import com.google.gson.Gson
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
@@ -40,198 +40,42 @@ class AppPokemonsRepositoryImpl @Inject constructor(
     private val appRestApiDao: AppPokemonsRestApiDao,
     private val appDatabaseDao: AppPokemonsDatabaseDao,
     private val configPreferences: ConfigPreferences,
-    private val executor: ThreadExecutor,
-    private val gson: Gson
+    private val executor: ThreadExecutor
 ) : AppPokemonsRepository {
 
     private val compositeDisposable = CompositeDisposable()
 
-    override fun pokemonListInit(
-        offset: Int,
-        limit: Int,
-        query: String,
-        category: String,
-        onPrepared: () -> Unit,
-        onSuccess: (MutableList<BaseItemView>) -> Unit,
-        onError: (MutableList<BaseItemView>) -> Unit
-    ): Disposable {
-        return Single.zip(
-            loadList(category, query, offset, limit),
-            listCount(category, query),
-            { list, count -> Pair(list, count.size) })
-            .doOnSubscribe {
-                onPrepared()
-            }
-            .subscribe(
-                { pair ->
-                    val pokemonList = pair.first
-                    val itemCount = pair.second
-                    val itemList: MutableList<BaseItemView> = mutableListOf()
-                    val statisticList = appDatabaseDao.statisticListView()
-                    val abilityList = appDatabaseDao.abilityListView()
-                    val typeList = appDatabaseDao.typeListView()
-                    pokemonList.forEach {
-                        itemList.add(
-                            CardItemView(
-                                index = it.index.defIfNull().toString(),
-                                next = (offset + limit < itemCount),
-                                viewItem = mapper.toViewItem(
-                                    it,
-                                    statisticList,
-                                    abilityList,
-                                    typeList
-                                )
-                            )
+    override fun loadPokemons(): Flowable<MutableList<BaseItemView>> {
+        return appDatabaseDao.pokemonLiveList()
+            .map { pokemonList ->
+                val itemList: MutableList<BaseItemView> = mutableListOf()
+                pokemonList.forEach {
+                    itemList.add(
+                        CardItemView(
+                            index = it.index.defIfNull().toString(),
+                            name = it.name.defIfNull(),
+                            viewItem = mapper.toViewItem(it)
                         )
-                    }
-                    itemList.ifEmpty {
-                        itemList.add(
-                            NoItemView(
-                                title = context.resources.getString(R.string.result).defIfNull()
-                            )
-                        )
-                    }
-
-                    onSuccess(itemList)
-                },
-                { errorMessage ->
-                    Timber.e(errorMessage, "Loading error")
-
-                    val itemList: MutableList<BaseItemView> = mutableListOf()
-                    itemList.ifEmpty {
-                        itemList.add(
-                            NoItemView(
-                                title = context.resources.getString(R.string.result).defIfNull()
-                            )
-                        )
-                    }
-
-                    onError(itemList)
+                    )
                 }
-            )
-    }
-
-    override fun pokemonListPaged(
-        offset: Int,
-        limit: Int,
-        query: String,
-        category: String,
-        onPrepared: () -> Unit,
-        onSuccess: (MutableList<BaseItemView>) -> Unit,
-        onError: () -> Unit
-    ): Disposable {
-        return Single.zip(
-            loadList(category, query, offset, limit),
-            listCount(category, query),
-            { list, count -> Pair(list, count.size) })
-            .doOnSubscribe {
-                onPrepared()
-            }
-            .subscribe(
-                { pair ->
-                    val pokemonList = pair.first
-                    val itemCount = pair.second
-                    val itemList: MutableList<BaseItemView> = mutableListOf()
-                    val statisticList = appDatabaseDao.statisticListView()
-                    val abilityList = appDatabaseDao.abilityListView()
-                    val typeList = appDatabaseDao.typeListView()
-                    pokemonList.forEach {
-                        itemList.add(
-                            CardItemView(
-                                index = it.index.defIfNull().toString(),
-                                next = (offset + limit < itemCount),
-                                viewItem = mapper.toViewItem(
-                                    it,
-                                    statisticList,
-                                    abilityList,
-                                    typeList
-                                )
-                            )
+                itemList.ifEmpty {
+                    itemList.add(
+                        NoItemView(
+                            title = context.resources.getString(R.string.result).defIfNull()
                         )
-                    }
-
-                    itemList.ifEmpty {
-                        itemList.add(
-                            EmptyItemView(
-                                index = NO_ITEM + (offset + limit),
-                                next = (offset + limit < itemCount)
-                            )
-                        )
-                    }
-
-                    onSuccess(itemList)
-                },
-                { errorMessage ->
-                    Timber.e(errorMessage, "Loading error")
-                    onError()
+                    )
                 }
-            )
+                itemList
+            }
     }
 
-    private fun loadList(
-        category: String,
-        query: String,
-        offset: Int,
-        limit: Int
-    ): Single<List<PokemonInfoTableItem>> {
-        return (if (category.isEmpty())
-            (if (query.isEmpty())
-                appDatabaseDao.pokemonPagedList(
-                    offset = offset,
-                    limit = limit
-                ) else
-                appDatabaseDao.pokemonPagedList(
-                    offset = offset,
-                    limit = limit,
-                    filter = query
-                )) else
-            (if (query.isEmpty())
-                appDatabaseDao.pokemonPagedList(
-                    indexes = indexesByCategory(category),
-                    offset = offset,
-                    limit = limit
-                ) else
-                appDatabaseDao.pokemonPagedList(
-                    indexes = indexesByCategory(category),
-                    offset = offset,
-                    limit = limit,
-                    filter = query
-                )))
-    }
-
-    private fun listCount(
-        category: String,
-        query: String,
-    ): Single<List<Int>> {
-        return (if (category.isEmpty())
-            (if (query.isEmpty())
-                appDatabaseDao.pokemonPagedListCount() else
-                appDatabaseDao.pokemonPagedListCount(
-                    filter = query
-                )) else
-            (if (query.isEmpty())
-                appDatabaseDao.pokemonPagedListCount(
-                    indexes = indexesByCategory(category)
-                ) else
-                appDatabaseDao.pokemonPagedListCount(
-                    indexes = indexesByCategory(category),
-                    filter = query
-                )))
-    }
-
-    private fun indexesByCategory(category: String): List<Int> {
-        return appDatabaseDao.pokemonInfoList()
-            .filter { (gson.fromJson(it.types) as List<Type>).find { type -> type.type.name == category } != null }
-            .map { it.index }
-    }
-
-    override fun status(
+    override fun loadList(
         offset: Int,
         limit: Int,
-        status: PublishSubject<LauncherViewState>
+        status: PublishSubject<LauncherViewState>,
     ): Observable<LauncherViewState> {
         compositeDisposable.clear()
-        compositeDisposable.add(load(offset, limit, status))
+        compositeDisposable.add(loadData(offset, limit, status))
         return status
             .subscribeOn(executor.mainExecutor)
             .observeOn(executor.postExecutor)
@@ -241,10 +85,39 @@ class AppPokemonsRepositoryImpl @Inject constructor(
             }
     }
 
-    private fun load(
+    private fun loadData(
         offset: Int,
         limit: Int,
-        status: PublishSubject<LauncherViewState>
+        status: PublishSubject<LauncherViewState>,
+    ): Disposable {
+        return Completable.fromAction { appRestApiDao.checkCloudConnection() }
+            .andThen(appRestApiDao.pokemonList(offset, limit))
+            .doOnComplete { status.onNext(LauncherViewState.FINISHED) }
+            .subscribeOn(executor.mainExecutor)
+            .observeOn(executor.postExecutor)
+            .subscribe({ loadCompleted() }, { loadError(status) })
+    }
+
+    override fun loadStatus(
+        offset: Int,
+        limit: Int,
+        status: PublishSubject<LauncherViewState>,
+    ): Observable<LauncherViewState> {
+        compositeDisposable.clear()
+        compositeDisposable.add(loadSettings(offset, limit, status))
+        return status
+            .subscribeOn(executor.mainExecutor)
+            .observeOn(executor.postExecutor)
+            .onErrorReturn {
+                Timber.e(it, "Loading error")
+                LauncherViewState.ERROR
+            }
+    }
+
+    private fun loadSettings(
+        offset: Int,
+        limit: Int,
+        status: PublishSubject<LauncherViewState>,
     ): Disposable {
         return Completable.fromAction { status.onNext(LauncherViewState.CHECK_CONNECTION) }
             .andThen(appRestApiDao.checkCloudConnection())
@@ -264,7 +137,7 @@ class AppPokemonsRepositoryImpl @Inject constructor(
             }
             .subscribeOn(executor.mainExecutor)
             .observeOn(executor.postExecutor)
-            .subscribe({ loadCompleted() },{ loadError(status) })
+            .subscribe({ loadCompleted() }, { loadError(status) })
     }
 
     private fun loadCompleted() {
@@ -282,8 +155,8 @@ class AppPokemonsRepositoryImpl @Inject constructor(
                 it.forEach { item ->
                     itemList.add(
                         LanguageItemView(
-                            index = item.name.defIfNull(),
-                            next = false,
+                            index = item.index.defIfNull().toString(),
+                            name = item.name.defIfNull(),
                             viewItem = mapper.toViewItem(item)
                         )
                     )

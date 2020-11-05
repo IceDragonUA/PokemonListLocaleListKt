@@ -15,6 +15,7 @@ import com.evaluation.pokemons.model.item.database.statistic.StatisticTableView
 import com.evaluation.pokemons.model.item.database.types.TypeTableItem
 import com.evaluation.pokemons.model.item.database.types.TypeNameTableItem
 import com.evaluation.pokemons.model.item.database.types.TypeTableView
+import io.reactivex.Flowable
 import io.reactivex.Single
 
 @Dao
@@ -50,17 +51,8 @@ interface AppPokemonsDatabaseDao {
     @Query("SELECT * FROM pokemon_info ORDER BY `index` ASC")
     fun pokemonInfoList(): List<PokemonInfoTableItem>
 
-    @Query("SELECT * FROM pokemon_info ORDER BY `index` ASC LIMIT :limit OFFSET :offset ")
-    fun pokemonPagedList(limit: Int, offset: Int): Single<List<PokemonInfoTableItem>>
-
-    @Query("SELECT * FROM pokemon_info WHERE name LIKE '%' || :filter || '%' ORDER BY `index` ASC LIMIT :limit OFFSET :offset ")
-    fun pokemonPagedList(limit: Int, offset: Int, filter: String): Single<List<PokemonInfoTableItem>>
-
-    @Query("SELECT * FROM pokemon_info WHERE `index` IN (:indexes) ORDER BY `index` ASC LIMIT :limit OFFSET :offset ")
-    fun pokemonPagedList(indexes: List<Int>, limit: Int, offset: Int): Single<List<PokemonInfoTableItem>>
-
-    @Query("SELECT * FROM pokemon_info WHERE `index` IN (:indexes) AND name LIKE '%' || :filter || '%' ORDER BY `index` ASC LIMIT :limit OFFSET :offset ")
-    fun pokemonPagedList(indexes: List<Int>, limit: Int, offset: Int, filter: String): Single<List<PokemonInfoTableItem>>
+    @Query("SELECT * FROM pokemons ORDER BY `index`")
+    fun pokemonLiveList(): Flowable<List<PokemonTableItem>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLanguageList(items: List<LanguageTableItem>)
@@ -88,18 +80,6 @@ interface AppPokemonsDatabaseDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPokemon(item: PokemonInfoTableItem)
-
-    @Query("SELECT `index` FROM pokemon_info ORDER BY `index`")
-    fun pokemonPagedListCount(): Single<List<Int>>
-
-    @Query("SELECT `index` FROM pokemon_info WHERE name LIKE '%' || :filter || '%' ORDER BY `index`")
-    fun pokemonPagedListCount(filter: String): Single<List<Int>>
-
-    @Query("SELECT `index` FROM pokemon_info WHERE `index` IN (:indexes) ORDER BY `index`")
-    fun pokemonPagedListCount(indexes: List<Int>): Single<List<Int>>
-
-    @Query("SELECT `index` FROM pokemon_info WHERE `index` IN (:indexes) AND name LIKE '%' || :filter || '%' ORDER BY `index`")
-    fun pokemonPagedListCount(indexes: List<Int>, filter: String): Single<List<Int>>
 
     @Query("DELETE FROM languages")
     fun deleteLanguageList()

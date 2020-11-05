@@ -26,6 +26,7 @@ import com.evaluation.pokemons.model.item.view.language.LanguageView
 import com.evaluation.pokemons.model.item.view.pokemon.options.PokemonAbilityView
 import com.evaluation.pokemons.model.item.view.pokemon.options.PokemonStatView
 import com.evaluation.pokemons.model.item.view.pokemon.options.PokemonTypeView
+import com.evaluation.pokemons.model.item.view.pokemon.PokemonItemView
 import com.evaluation.pokemons.model.item.view.pokemon.PokemonView
 import com.evaluation.utils.DatabaseType
 import com.evaluation.utils.defIfNull
@@ -104,8 +105,21 @@ class PokemonMapper @Inject constructor(private val gson: Gson) {
         )
     }
 
-    fun toViewItem(item: PokemonInfoTableItem, statisticList: List<StatisticTableView>, abilityList: List<AbilityTableView>, typeList: List<TypeTableView>): PokemonView {
+    fun toViewItem(item: LanguageTableItem): LanguageView {
+        return LanguageView(
+            name = item.name.defIfNull()
+        )
+    }
+
+    fun toViewItem(item: PokemonTableItem): PokemonView {
         return PokemonView(
+            name = item.name.defIfNull(),
+            url = item.url.defIfNull()
+        )
+    }
+
+    fun toViewItem(item: PokemonInfoTableItem, statisticList: List<StatisticTableView>, abilityList: List<AbilityTableView>, typeList: List<TypeTableView>): PokemonItemView {
+        return PokemonItemView(
             name = item.name.defIfNull(),
             weight = item.weight.defIfNull(),
             height = item.height.defIfNull(),
@@ -150,12 +164,6 @@ class PokemonMapper @Inject constructor(private val gson: Gson) {
     }
 
     private fun toViewItem(item: Language): LanguageView {
-        return LanguageView(
-            name = item.name.defIfNull()
-        )
-    }
-
-    fun toViewItem(item: LanguageTableItem): LanguageView {
         return LanguageView(
             name = item.name.defIfNull()
         )

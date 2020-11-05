@@ -9,7 +9,7 @@ import com.evaluation.utils.NO_ITEM
  */
 data class NoItemView(
     override var index: String = NO_ITEM,
-    override var next: Boolean = false,
+    override var name: String = NO_ITEM,
     var title: String
 ) : BaseItemView {
 

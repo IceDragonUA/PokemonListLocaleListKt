@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.card_item.view.*
 class LanguageItemHolder(itemView: View, listener: AdapterItemClickListener<LanguageItemView>?) :
     BaseViewHolder<LanguageItemView>(itemView, listener) {
 
-    override fun bind(item: LanguageItemView, language: String) {
+    override fun bind(item: LanguageItemView, language: String?) {
         itemView.name.initText(item.viewItem.name)
         itemView.setOnClickListener {
             listener?.onClicked(item)

@@ -58,7 +58,7 @@ class LanguageFragment : Fragment(), AdapterItemClickListener<BaseItemView> {
 
     private fun initLoader() {
         viewModel.result.observe(viewLifecycleOwner) {
-            binding.listView.adapter.items = it
+            binding.listView.adapter?.items = it
         }
     }
 

@@ -67,23 +67,7 @@ class AppPokemonsRestApiDaoImpl @Inject constructor(
                             if (hasNext) {
                                 pokemonList(offset + limit, limit)
                             } else {
-                                val resultList = mutableListOf<Single<Pokemon>>()
-                                val databaseList = appDatabaseDao.pokemonList()
-                                databaseList.forEach { item ->
-                                    resultList.add(appRest.pokemon(item.url))
-                                }
-                                Single.zip(resultList) { args ->
-                                    args.forEach { arg ->
-                                        databaseList.forEach { item ->
-                                            if (item.name == (arg as Pokemon).name) storePokemonItemToRoom(
-                                                arg,
-                                                item.index
-                                            )
-                                        }
-                                    }
-                                }.flatMapCompletable {
-                                    Completable.complete()
-                                }
+                                Completable.complete()
                             }
                         }
                 }

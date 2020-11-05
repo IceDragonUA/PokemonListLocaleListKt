@@ -74,13 +74,6 @@ object AndroidModule {
 
     @Singleton
     @Provides
-    fun config(): PagedList.Config = PagedList.Config.Builder()
-        .setEnablePlaceholders(false)
-        .setPageSize(PAGE_SIZE)
-        .build()
-
-    @Singleton
-    @Provides
     fun executor(): Executor = Executors.newFixedThreadPool(THREADS)
 
 }

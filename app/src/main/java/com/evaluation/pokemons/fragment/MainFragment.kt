@@ -5,11 +5,10 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.evaluation.fragment.BaseFragment
 import com.evaluation.R
-import com.evaluation.main.MainActivity
 import com.evaluation.adapter.AdapterItemClickListener
 import com.evaluation.adapter.viewholder.item.BaseItemView
 import com.evaluation.databinding.MainLayoutBinding
@@ -26,22 +25,18 @@ import kotlinx.coroutines.*
  * @since 09.03.2020
  */
 @AndroidEntryPoint
-class MainFragment : BaseFragment(), AdapterItemClickListener<BaseItemView>,
+class MainFragment : Fragment(), AdapterItemClickListener<BaseItemView>,
     SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
 
     private var binding: MainLayoutBinding by autoCleared()
 
     private val viewModel: PokemonViewModel by viewModels()
 
-    private var language: String = emptyString()
-
     private var queryTextChangedJob: Job? = null
 
     private var lastSearchQuery: String? = null
 
     private var isIconified: Boolean = true
-
-    private var lastCategory: String = emptyString()
 
     private var listener: FragmentListener? = null
 
@@ -65,10 +60,6 @@ class MainFragment : BaseFragment(), AdapterItemClickListener<BaseItemView>,
         if (iconified != null) {
             isIconified = iconified
         }
-        val category = savedInstanceState?.getString(CATEGORY)
-        if (category != null) {
-            lastCategory = category
-        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -76,7 +67,6 @@ class MainFragment : BaseFragment(), AdapterItemClickListener<BaseItemView>,
             outState.putString(QUERY, lastSearchQuery)
         }
         outState.putBoolean(ICONIFIED, isIconified)
-        outState.putString(CATEGORY, lastCategory)
         super.onSaveInstanceState(outState)
     }
 
@@ -135,9 +125,7 @@ class MainFragment : BaseFragment(), AdapterItemClickListener<BaseItemView>,
     }
 
     override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-        lastCategory = emptyString()
-        viewModel.search(emptyString(), lastCategory)
-        listToDefaultPosition()
+        binding.listView.adapter?.filter?.filter(emptyString())
         isIconified = true
         return true
     }
@@ -151,8 +139,7 @@ class MainFragment : BaseFragment(), AdapterItemClickListener<BaseItemView>,
                 delay(SEARCH_DELAY_MS)
                 if (!query.isNullOrEmpty()) {
                     if (lastSearchQuery != query) {
-                        viewModel.search(query, lastCategory)
-                        listToDefaultPosition()
+                        binding.listView.adapter?.filter?.filter(query)
                     }
                 }
                 lastSearchQuery = query
@@ -167,19 +154,8 @@ class MainFragment : BaseFragment(), AdapterItemClickListener<BaseItemView>,
 
     private fun initLoader() {
         viewModel.items.observe(viewLifecycleOwner) {
-            binding.listView.adapter?.submitList(it)
-        }
-    }
-
-    override fun categorySwitched(category: String) {
-        lastCategory = category
-        viewModel.search(emptyString(), lastCategory)
-        listToDefaultPosition()
-    }
-
-    private fun listToDefaultPosition() {
-        Run.after(TIME_SCROLL_MS) {
-            binding.listView.scrollToPosition(DEFAULT_POSITION)
+            binding.listView.adapter?.itemsNotFiltered = it
+            binding.listView.adapter?.filter?.filter(lastSearchQuery ?: emptyString())
         }
     }
 
@@ -188,9 +164,7 @@ class MainFragment : BaseFragment(), AdapterItemClickListener<BaseItemView>,
             is CardItemView -> {
                 findNavController().navigate(
                     MainFragmentDirections.actionMainFragmentToDetailFragment(
-                        item.viewItem.name,
-                        language,
-                        item.viewItem
+                        item.viewItem.name
                     )
                 )
             }

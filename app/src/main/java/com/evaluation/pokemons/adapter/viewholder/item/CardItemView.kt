@@ -2,6 +2,7 @@ package com.evaluation.pokemons.adapter.viewholder.item
 
 import com.evaluation.adapter.factory.TypesFactory
 import com.evaluation.adapter.viewholder.item.BaseItemView
+import com.evaluation.pokemons.model.item.view.pokemon.PokemonItemView
 import com.evaluation.pokemons.model.item.view.pokemon.PokemonView
 
 /**
@@ -10,7 +11,7 @@ import com.evaluation.pokemons.model.item.view.pokemon.PokemonView
  */
 data class CardItemView(
     override var index: String,
-    override var next: Boolean = false,
+    override var name: String,
     var viewItem: PokemonView
 ) : BaseItemView {
 
