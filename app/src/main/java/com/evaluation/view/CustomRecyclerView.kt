@@ -34,7 +34,7 @@ class CustomRecyclerView : RecyclerView, AdapterItemClickListener<BaseItemView> 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         layoutManager = LinearLayoutManager(context)
         adapter = CustomListAdapter(TypesFactoryImpl(interaction), this, configPreferences)
-        itemAnimator = DefaultItemAnimator()
+        itemAnimator = null
     }
 
     override fun getAdapter(): CustomListAdapter? =
