@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.Transformations.switchMap
 import com.evaluation.pokemons.interaction.AppPokemonsInteraction
+import com.evaluation.storage.ConfigPreferences
 import com.evaluation.utils.LauncherViewState
 import com.evaluation.utils.emptyString
 
@@ -14,7 +15,8 @@ import com.evaluation.utils.emptyString
  * @since 07.10.2020
  */
 class PokemonViewModel @ViewModelInject constructor(
-    interaction: AppPokemonsInteraction
+    interaction: AppPokemonsInteraction,
+    configPreferences: ConfigPreferences
 ) : ViewModel() {
 
     var items = interaction.pokemonList()
@@ -22,5 +24,7 @@ class PokemonViewModel @ViewModelInject constructor(
     init {
         interaction.loadList()
     }
+
+    val language = configPreferences.restoreLanguage()
 
 }

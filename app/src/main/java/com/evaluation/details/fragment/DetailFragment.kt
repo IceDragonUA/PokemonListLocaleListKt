@@ -43,7 +43,7 @@ class DetailFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-//        if (language.isEmpty()) language = DetailFragmentArgs.fromBundle(requireArguments()).language
+        if (language.isEmpty()) language = DetailFragmentArgs.fromBundle(requireArguments()).language
         binding = DataBindingUtil.inflate(inflater, R.layout.detail_layout, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
@@ -51,33 +51,33 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        initRootView(DetailFragmentArgs.fromBundle(requireArguments()))
+        initRootView(DetailFragmentArgs.fromBundle(requireArguments()))
     }
 
-//    private fun initRootView(fromBundle: DetailFragmentArgs) {
-//        binding.image.loadFromUrl(fromBundle.item.front_default)
-//        binding.weightValue.initText(fromBundle.item.weight.toString())
-//        binding.heightValue.initText(fromBundle.item.height.toString())
-//        binding.experienceValue.initText(fromBundle.item.experience.toString())
-//        bindInfo(fromBundle, language)
-//    }
-//
-//    private fun bindInfo(fromBundle: DetailFragmentArgs, language: String) {
-//        bindItem(list((fromBundle.item.stats as List<PokemonInfo>), language), binding.statsValue)
-//        bindItem(list((fromBundle.item.abilities as List<PokemonInfo>), language), binding.abilitiesValue)
-//        bindItem(list((fromBundle.item.types as List<PokemonInfo>), language), binding.typesValue)
-//    }
-//
-//    private fun list(list: List<PokemonInfo>, language: String): List<LanguageNameView?> {
-//        return list
-//            .filter { it.names().find { name -> name.language.name == language }?.name != null }
-//            .map { it.names().find { name -> name.language.name == language } }
-//    }
-//
-//    private fun bindItem(list: List<LanguageNameView?>, view: TextView) {
-//        if (list.isNotEmpty())
-//            view.initText(list.joinToString { it?.name ?: emptyString() }) else
-//            view.initText(emptyString())
-//    }
+    private fun initRootView(fromBundle: DetailFragmentArgs) {
+        binding.image.loadFromUrl(fromBundle.item.front_default)
+        binding.weightValue.initText(fromBundle.item.weight.toString())
+        binding.heightValue.initText(fromBundle.item.height.toString())
+        binding.experienceValue.initText(fromBundle.item.experience.toString())
+        bindInfo(fromBundle, language)
+    }
+
+    private fun bindInfo(fromBundle: DetailFragmentArgs, language: String) {
+        bindItem(list((fromBundle.item.stats as List<PokemonInfo>), language), binding.statsValue)
+        bindItem(list((fromBundle.item.abilities as List<PokemonInfo>), language), binding.abilitiesValue)
+        bindItem(list((fromBundle.item.types as List<PokemonInfo>), language), binding.typesValue)
+    }
+
+    private fun list(list: List<PokemonInfo>, language: String): List<LanguageNameView?> {
+        return list
+            .filter { it.names().find { name -> name.language.name == language }?.name != null }
+            .map { it.names().find { name -> name.language.name == language } }
+    }
+
+    private fun bindItem(list: List<LanguageNameView?>, view: TextView) {
+        if (list.isNotEmpty())
+            view.initText(list.joinToString { it?.name ?: emptyString() }) else
+            view.initText(emptyString())
+    }
 
 }

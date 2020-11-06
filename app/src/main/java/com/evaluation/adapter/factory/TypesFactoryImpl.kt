@@ -10,11 +10,12 @@ import com.evaluation.pokemons.adapter.viewholder.item.CardItemView
 import com.evaluation.adapter.viewholder.item.NoItemView
 import com.evaluation.language.adapter.viewholder.LanguageItemHolder
 import com.evaluation.language.adapter.viewholder.item.LanguageItemView
+import com.evaluation.pokemons.interaction.AppPokemonsInteraction
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class TypesFactoryImpl @Inject constructor() : TypesFactory {
+class TypesFactoryImpl @Inject constructor(private val interaction: AppPokemonsInteraction) : TypesFactory {
 
     override fun type(item: NoItemView): Int = R.layout.no_item
 
@@ -26,7 +27,7 @@ class TypesFactoryImpl @Inject constructor() : TypesFactory {
     override fun holder(type: Int, view: View, listener: AdapterItemClickListener<*>?): BaseViewHolder<*> {
         return when (type) {
             R.layout.no_item -> NoItemHolder(view)
-            R.layout.card_item -> CardItemHolder(view, listener as? AdapterItemClickListener<CardItemView>)
+            R.layout.card_item -> CardItemHolder(view, listener as? AdapterItemClickListener<CardItemView>, interaction)
             R.layout.language_item -> LanguageItemHolder(view, listener as? AdapterItemClickListener<LanguageItemView>)
             else -> throw RuntimeException("Illegal view type")
         }

@@ -51,8 +51,14 @@ interface AppPokemonsDatabaseDao {
     @Query("SELECT * FROM pokemon_info ORDER BY `index` ASC")
     fun pokemonInfoList(): List<PokemonInfoTableItem>
 
-    @Query("SELECT * FROM pokemons ORDER BY `index`")
+    @Query("SELECT * FROM pokemons ORDER BY `index` ASC")
     fun pokemonLiveList(): Flowable<List<PokemonTableItem>>
+
+    @Query("SELECT * FROM pokemon_info WHERE name = :name ORDER BY `index` ASC")
+    fun pokemonInfo(name: String): Single<PokemonInfoTableItem>
+
+    @Query("SELECT * FROM pokemon_info WHERE name = :name ORDER BY `index` ASC")
+    fun pokemonInfoLive(name: String): Flowable<PokemonInfoTableItem>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLanguageList(items: List<LanguageTableItem>)

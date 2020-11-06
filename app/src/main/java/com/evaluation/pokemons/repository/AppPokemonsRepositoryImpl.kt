@@ -9,16 +9,16 @@ import com.evaluation.language.adapter.viewholder.item.LanguageItemView
 import com.evaluation.pokemons.adapter.viewholder.item.CardItemView
 import com.evaluation.pokemons.database.AppPokemonsDatabaseDao
 import com.evaluation.pokemons.mapper.PokemonMapper
-import com.evaluation.pokemons.model.item.database.pokemon.PokemonInfoTableItem
-import com.evaluation.pokemons.model.item.database.pokemon.PokemonTableItem
+import com.evaluation.pokemons.model.item.database.ability.AbilityTableView
+import com.evaluation.pokemons.model.item.database.statistic.StatisticTableView
 import com.evaluation.pokemons.model.item.database.types.TypeTableItem
-import com.evaluation.pokemons.model.item.rest.pokemon.options.Type
+import com.evaluation.pokemons.model.item.database.types.TypeTableView
+import com.evaluation.pokemons.model.item.view.pokemon.PokemonItemView
+import com.evaluation.pokemons.model.item.view.pokemon.PokemonView
 import com.evaluation.pokemons.network.AppPokemonsRestApiDao
 import com.evaluation.storage.ConfigPreferences
 import com.evaluation.utils.LauncherViewState
 import com.evaluation.utils.defIfNull
-import com.evaluation.utils.fromJson
-import com.google.gson.Gson
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
@@ -40,8 +40,12 @@ class AppPokemonsRepositoryImpl @Inject constructor(
     private val appRestApiDao: AppPokemonsRestApiDao,
     private val appDatabaseDao: AppPokemonsDatabaseDao,
     private val configPreferences: ConfigPreferences,
-    private val executor: ThreadExecutor
+    private val executor: ThreadExecutor,
 ) : AppPokemonsRepository {
+
+    private lateinit var statistics: List<StatisticTableView>
+    private lateinit var abilities: List<AbilityTableView>
+    private lateinit var types: List<TypeTableView>
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -66,6 +70,32 @@ class AppPokemonsRepositoryImpl @Inject constructor(
                     )
                 }
                 itemList
+            }
+    }
+
+    override fun loadPokemonInfo(name: String): Flowable<PokemonItemView> {
+        return appDatabaseDao.pokemonInfoLive(name)
+            .map {
+                mapper.toViewItem(it, statistics, abilities, types)
+            }
+            .subscribeOn(executor.mainExecutor)
+            .observeOn(executor.postExecutor)
+    }
+
+    override fun loadPokemonInfo(item: PokemonView, index: Int): Completable {
+        return appDatabaseDao.pokemonInfo(item.name)
+            .flatMapCompletable {
+                Completable.complete()
+            }.onErrorComplete {
+                appRestApiDao.pokemonInfo(item.url, index)
+                    .flatMapCompletable {
+                        appDatabaseDao.insertPokemon(mapper.toTableItem(it, index))
+                        Completable.complete()
+                    }
+                    .subscribeOn(executor.mainExecutor)
+                    .observeOn(executor.postExecutor)
+                    .subscribe()
+                true
             }
     }
 
@@ -133,11 +163,25 @@ class AppPokemonsRepositoryImpl @Inject constructor(
             .andThen(appRestApiDao.typeList(offset = offset, limit = limit))
             .doOnComplete {
                 configPreferences.saveBoot(true)
+                statistics = appDatabaseDao.statisticListView()
+                abilities = appDatabaseDao.abilityListView()
+                types = appDatabaseDao.typeListView()
+                Timber.d("${statistics.size}")
+                Timber.d("${abilities.size}")
+                Timber.d("${types.size}")
                 status.onNext(LauncherViewState.FINISHED)
             }
             .subscribeOn(executor.mainExecutor)
             .observeOn(executor.postExecutor)
-            .subscribe({ loadCompleted() }, { loadError(status) })
+            .subscribe({ loadCompleted() }, {
+                statistics = appDatabaseDao.statisticListView()
+                abilities = appDatabaseDao.abilityListView()
+                types = appDatabaseDao.typeListView()
+                Timber.d("${statistics.size}")
+                Timber.d("${abilities.size}")
+                Timber.d("${types.size}")
+                loadError(status)
+            })
     }
 
     private fun loadCompleted() {

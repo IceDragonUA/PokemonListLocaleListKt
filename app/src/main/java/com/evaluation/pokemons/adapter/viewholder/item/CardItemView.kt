@@ -12,7 +12,8 @@ import com.evaluation.pokemons.model.item.view.pokemon.PokemonView
 data class CardItemView(
     override var index: String,
     override var name: String,
-    var viewItem: PokemonView
+    var viewItem: PokemonView,
+    var viewItemInfo: PokemonItemView? = null,
 ) : BaseItemView {
 
     override fun type(typesFactory: TypesFactory): Int = typesFactory.type(this)

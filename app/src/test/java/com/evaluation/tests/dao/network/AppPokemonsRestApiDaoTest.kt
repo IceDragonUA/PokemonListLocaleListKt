@@ -7,6 +7,7 @@ import com.evaluation.pokemons.database.AppPokemonsDatabaseDao
 import com.evaluation.pokemons.mapper.PokemonMapper
 import com.evaluation.pokemons.network.AppPokemonsRestApiDao
 import com.evaluation.pokemons.network.AppPokemonsRestApiDaoImpl
+import com.evaluation.storage.ConfigPreferences
 import com.evaluation.tests.dao.RetrofitMocks
 import com.evaluation.tests.dao.RoomMocks
 import com.evaluation.tests.test
@@ -38,6 +39,9 @@ class AppPokemonsRestApiDaoTest {
     private lateinit var networkHandler: NetworkHandler
 
     @Mock
+    private lateinit var configPreferences: ConfigPreferences
+
+    @Mock
     private lateinit var mapper: PokemonMapper
 
     @Before
@@ -49,6 +53,7 @@ class AppPokemonsRestApiDaoTest {
             appRest,
             appDatabase,
             networkHandler,
+            configPreferences,
             mapper
         )
     }

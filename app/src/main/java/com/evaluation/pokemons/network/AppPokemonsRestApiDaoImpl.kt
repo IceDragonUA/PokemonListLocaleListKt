@@ -77,6 +77,10 @@ class AppPokemonsRestApiDaoImpl @Inject constructor(
             }
     }
 
+    override fun pokemonInfo(url: String, index: Int): Single<Pokemon> {
+        return appRest.pokemon(url)
+    }
+
     private fun storePokemonListToRoom(data: List<ResponseResult>, offset: Int): Single<Unit> {
         return Single.fromCallable {
             appDatabaseDao.insertPokemonList(data.mapIndexed { index, result ->
@@ -85,24 +89,19 @@ class AppPokemonsRestApiDaoImpl @Inject constructor(
         }
     }
 
-
-    private fun storePokemonItemToRoom(data: Pokemon, index: Int) {
-        return appDatabaseDao.insertPokemon(mapper.toTableItem(data, index))
-    }
-
     override fun languageList(offset: Int, limit: Int): Completable {
         return appRest.languageList(offset, limit)
             .flatMapCompletable { data ->
                 val hasNext = !data.next.isNullOrEmpty()
                 return@flatMapCompletable data.results.let {
                     storeLanguagesToRoom(it, offset)
-                        .andThen(
+                        .flatMapCompletable {
                             if (hasNext) {
                                 languageList(offset + limit, limit)
                             } else {
                                 Completable.complete()
                             }
-                        )
+                        }
                 }
             }.onErrorComplete {
                 Timber.e(it, "Loading error")
@@ -110,8 +109,8 @@ class AppPokemonsRestApiDaoImpl @Inject constructor(
             }
     }
 
-    private fun storeLanguagesToRoom(data: List<ResponseResult>, offset: Int): Completable {
-        return Completable.fromAction {
+    private fun storeLanguagesToRoom(data: List<ResponseResult>, offset: Int): Single<Unit> {
+        return Single.fromCallable {
             appDatabaseDao.insertLanguageList(data.mapIndexed { index, result ->
                 mapper.toTableItem(
                     result,

@@ -16,11 +16,11 @@ import kotlin.properties.Delegates
 class CustomListAdapter constructor(
     private val typeFactory: TypesFactory,
     private val listener: AdapterItemClickListener<*>? = null,
-    private val configPreferences: ConfigPreferences,
+    private val configPreferences: ConfigPreferences
 ) : RecyclerView.Adapter<BaseViewHolder<BaseItemView>>(), DiffUtilCallback, Filterable {
 
     var items: MutableList<BaseItemView> by Delegates.observable(mutableListOf()) { _, old, new ->
-        autoNotify(old, new) { o, n -> o.index == n.index }
+        autoNotify(old, new) { o, n -> o.name == n.name }
     }
 
     var itemsNotFiltered: MutableList<BaseItemView> = mutableListOf()

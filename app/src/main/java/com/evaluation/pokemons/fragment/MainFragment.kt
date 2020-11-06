@@ -164,7 +164,9 @@ class MainFragment : Fragment(), AdapterItemClickListener<BaseItemView>,
             is CardItemView -> {
                 findNavController().navigate(
                     MainFragmentDirections.actionMainFragmentToDetailFragment(
-                        item.viewItem.name
+                        item.viewItem.name,
+                        item.viewItemInfo ?: emptyItem(),
+                        viewModel.language ?: emptyString()
                     )
                 )
             }

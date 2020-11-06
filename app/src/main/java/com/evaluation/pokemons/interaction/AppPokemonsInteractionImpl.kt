@@ -4,9 +4,15 @@ import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import com.evaluation.adapter.viewholder.item.BaseItemView
 import com.evaluation.pokemons.model.item.database.types.TypeTableItem
+import com.evaluation.pokemons.model.item.rest.pokemon.Pokemon
+import com.evaluation.pokemons.model.item.view.pokemon.PokemonItemView
+import com.evaluation.pokemons.model.item.view.pokemon.PokemonView
 import com.evaluation.pokemons.repository.AppPokemonsRepository
 import com.evaluation.utils.*
 import io.reactivex.BackpressureStrategy
+import io.reactivex.Completable
+import io.reactivex.Flowable
+import io.reactivex.Single
 import io.reactivex.processors.BehaviorProcessor
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
@@ -23,6 +29,16 @@ class AppPokemonsInteractionImpl @Inject constructor(
     @MainThread
     override fun pokemonList(): LiveData<MutableList<BaseItemView>> {
         return repository.loadPokemons().toLiveData()
+    }
+
+    @MainThread
+    override fun pokemonInfo(name: String): Flowable<PokemonItemView> {
+        return repository.loadPokemonInfo(name)
+    }
+
+    @MainThread
+    override fun pokemonInfo(item: PokemonView, index: Int): Completable {
+        return repository.loadPokemonInfo(item, index)
     }
 
     @MainThread

@@ -1,6 +1,8 @@
 package com.evaluation.pokemons.network
 
+import com.evaluation.pokemons.model.item.rest.pokemon.Pokemon
 import io.reactivex.Completable
+import io.reactivex.Single
 
 interface AppPokemonsRestApiDao {
 
@@ -9,6 +11,8 @@ interface AppPokemonsRestApiDao {
     fun checkBoot(): Completable
 
     fun pokemonList(offset: Int, limit: Int): Completable
+
+    fun pokemonInfo(url: String, index: Int): Single<Pokemon>
 
     fun languageList(offset: Int, limit: Int): Completable
 

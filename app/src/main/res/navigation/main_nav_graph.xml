@@ -2,10 +2,10 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_nav_graph.xml"
-    app:startDestination="@id/languageFragment">
+    app:startDestination="@id/mainFragment">
 
     <fragment
-        android:id="@+id/languageFragment"
+        android:id="@+id/mainFragment"
         android:name="com.evaluation.pokemons.fragment.MainFragment"
         android:label="@string/pokemons">
         <action
@@ -23,6 +23,12 @@
         android:label="{name}" >
         <argument
             android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="item"
+            app:argType="com.evaluation.pokemons.model.item.view.pokemon.PokemonItemView" />
+        <argument
+            android:name="language"
             app:argType="string" />
     </fragment>
 
